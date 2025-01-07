@@ -1,5 +1,6 @@
 ﻿using Database;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,13 @@ namespace Repository.Implementation
         {
             
         }
-        
+
+        public async Task<IEnumerable<TodoItem>> GetPagedDataAsync(int pageNumber, int pageSize)
+        {
+            return await _context.TodoItems
+                             .Skip((pageNumber - 1) * pageSize)
+                             .Take(pageSize)
+                             .ToListAsync();
+        }
     }
 }

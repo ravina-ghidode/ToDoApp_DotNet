@@ -9,5 +9,7 @@ namespace Repository.Interfaces
 {
     public interface ITodoItemRepository : IRepositoryBase<TodoItem>
     {
+        Task<IEnumerable<TodoItem>> GetPagedDataAsync(int pageNumber, int pageSize);
+
     }
 }

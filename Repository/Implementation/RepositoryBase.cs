@@ -11,7 +11,7 @@ namespace Repository.Implementation
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private readonly ApplicationContext _context;
+        protected readonly ApplicationContext _context;
 
         public RepositoryBase(ApplicationContext context)
         {

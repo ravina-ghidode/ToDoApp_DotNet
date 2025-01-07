@@ -71,5 +71,11 @@ namespace ToDoApp.Controllers
             return NoContent();
 
         }
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedTodos([FromQuery] PagingParameters pagingParameters)
+        {
+            var todos = await _unitOfWork.TodoItems.GetPagedDataAsync(pagingParameters.PageNumber, pagingParameters.PageSize);
+            return Ok(todos);
+        }
     }
 }
