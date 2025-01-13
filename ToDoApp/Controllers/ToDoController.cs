@@ -31,11 +31,10 @@ namespace ToDoApp.Controllers
             return item;
         }
         [HttpPost]
-        public async Task<IActionResult> AddData([FromBody]TodoItem item)
+        public void AddData([FromBody]TodoItem item)
         {
             _unitOfWork.TodoItems.Add(item);
-             int id = _unitOfWork.Complete();
-            return Ok(id);
+             _unitOfWork.Complete();
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateToDoItem(int id, [FromBody] TodoItem item)

@@ -11,6 +11,6 @@ namespace Repository.Interfaces
     {
         ITodoItemRepository TodoItems { get; }
         //IDeveloperRepository DeveloperRepository { get; }
-        int Complete();
+        void Complete();
     }
 }
