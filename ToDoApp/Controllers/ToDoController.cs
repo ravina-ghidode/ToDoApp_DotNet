@@ -1,11 +1,13 @@
 ﻿using Database;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
 
 namespace ToDoApp.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ToDoController : ControllerBase

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDonUnitTests", "ToDonUnitTests\ToDonUnitTests.csproj", "{864D5C76-DC4A-4C68-84FD-0E4ECEA8F379}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{00C3A3F4-A340-459B-A555-00E378B3BE03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{864D5C76-DC4A-4C68-84FD-0E4ECEA8F379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{864D5C76-DC4A-4C68-84FD-0E4ECEA8F379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{864D5C76-DC4A-4C68-84FD-0E4ECEA8F379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00C3A3F4-A340-459B-A555-00E378B3BE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C3A3F4-A340-459B-A555-00E378B3BE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C3A3F4-A340-459B-A555-00E378B3BE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C3A3F4-A340-459B-A555-00E378B3BE03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
