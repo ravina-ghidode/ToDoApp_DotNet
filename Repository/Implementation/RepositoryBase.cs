@@ -18,9 +18,9 @@ namespace Repository.Implementation
             _context = context;
         }
 
-        public void Add(T entity)
+        public async Task  AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
+            await _context.Set<T>().AddAsync(entity);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();

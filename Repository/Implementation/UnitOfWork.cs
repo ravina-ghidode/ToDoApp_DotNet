@@ -24,9 +24,9 @@ namespace Repository.Implementation
             //DeveloperRepository = new DeveloperRepository(_context);
             TodoItems = new TodoItemRepository(_context);
         }
-        public void Complete()
+        public async Task  CompleteAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

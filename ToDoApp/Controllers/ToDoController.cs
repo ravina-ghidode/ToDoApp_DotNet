@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interfaces;
+using Utility;
 
 namespace ToDoApp.Controllers
 {
@@ -20,56 +21,75 @@ namespace ToDoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TodoItem>> GetAll()
+        public async Task<ActionResult<ServiceResponse<IEnumerable<TodoItem>>>> GetAll()
         {
-            return await _unitOfWork.TodoItems.GetAllAsync();
+            var response = new ServiceResponse<IEnumerable<TodoItem>>();
+            var allItems = await _unitOfWork.TodoItems.GetAllToDoItemsAsync();
+            var serviceResponse = response.GetResponse(allItems, "All todos Retrived successfully", true);
+            return serviceResponse.IsSuccessful ? Ok(serviceResponse) : NoContent();
+            
         }
 
         [HttpGet("{id}")]
-        public async Task<TodoItem?> GetById(int id)
+        public async Task<ActionResult<ServiceResponse<TodoItem?>>> GetById(int id)
         {
-            var item = await _unitOfWork.TodoItems.GetByIdAsync(id);
-            
-            return item;
+            var response = new ServiceResponse<TodoItem?>();
+            var item = await _unitOfWork.TodoItems.GetTodoByIdAsync(id);
+            if(item is null)
+            {
+                return NotFound(response.GetResponse(null, "todoId Not found", false));
+            }
+            var serviceResponse = response.GetResponse(item, "A Todo Retrived Successfully", true);
+            return serviceResponse.IsSuccessful ? Ok(serviceResponse) : NoContent();
         }
         [HttpPost]
-        public void AddData([FromBody]TodoItem item)
+        public async Task<ActionResult<ServiceResponse<TodoItem>>> AddData(TodoItem item)
         {
-            _unitOfWork.TodoItems.Add(item);
-             _unitOfWork.Complete();
+            var response = new ServiceResponse<TodoItem>();
+            if(item is null || string.IsNullOrEmpty(item.Title))
+            {
+                return BadRequest(response.GetResponse(item, "Item or title cannot be left empty"));
+            }
+            var todo = await _unitOfWork.TodoItems.AddTodoItemAsync(item);
+            await _unitOfWork.CompleteAsync();
+
+            return Ok(response.GetResponse(todo, "Todo item added successfully", true));
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateToDoItem(int id, [FromBody] TodoItem item)
+        public async Task<ActionResult<ServiceResponse<TodoItem>>> UpdateToDoItem(int id, TodoItem item)
         {
-            if (item == null || item.Id != id)
+            var response = new ServiceResponse<TodoItem>();
+            if (item == null || string.IsNullOrEmpty(item.Title))
             {
-                return BadRequest("Invalid data.");
+                return BadRequest(response.GetResponse(null, "Invalid data"));
             }
             var todo = await _unitOfWork.TodoItems.GetByIdAsync(id);
             if(todo == null)
             {
-                return NotFound();
+                return NotFound(response.GetResponse(null, "Todo Item not found"));
             }
             todo.Title = item.Title;
             todo.DateCreated = item.DateCreated;
             todo.IsCompleted = item.IsCompleted;
 
-            _unitOfWork.TodoItems.Update(todo);
-            _unitOfWork.Complete();
-            return Ok(todo);
+            var updatedTodo =  _unitOfWork.TodoItems.UpdateTodoItem(todo);
+            await _unitOfWork.CompleteAsync();
+            return Ok(response.GetResponse(updatedTodo, "Todo Item updated successfully", true));
 
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteToDoItem(int id)
+        public async Task<ActionResult<ServiceResponse<TodoItem>>> DeleteToDoItem(int id)
         {
-            var todo = await _unitOfWork.TodoItems.GetByIdAsync(id);
-            if(todo == null)
+            var response = new ServiceResponse<TodoItem>();
+            var itemFromDb = await _unitOfWork.TodoItems.GetByIdAsync(id);
+            if(itemFromDb == null)
             {
-                return NotFound();
+                return NotFound(response.GetResponse(itemFromDb, "Id not found"));
             }
-            _unitOfWork.TodoItems.Remove(todo);
-            _unitOfWork.Complete();
-            return NoContent();
+
+            var deletedItem =  _unitOfWork.TodoItems.DeleteTodoItem(itemFromDb);
+            await _unitOfWork.CompleteAsync();
+            return Ok(response.GetResponse(deletedItem, "Todo Item deleted Successfully", true));
 
         }
         [HttpGet("paged")]

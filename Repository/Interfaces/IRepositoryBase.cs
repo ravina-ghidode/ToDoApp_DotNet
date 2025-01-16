@@ -10,7 +10,7 @@ namespace Repository.Interfaces
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
-        void Add(T entity);
+        Task AddAsync(T entity);
         void Update(T entity);
         void Remove(T entity);
     }
